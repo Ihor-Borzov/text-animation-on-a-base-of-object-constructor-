@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+  <style>
+
+#root{
+    color:rgb(0, 0, 0);
+    text-align: center;
+    font-size:30px;
+    
+}
+
+
+ .fade{
+   opacity:1;
+   transform:translateY(0px);
+   color:rgb(111, 19, 217);
+   transition: all 0.4s ease;
+   display: inline-block;
+   transform: rotate3d(45deg)
+}
+
+  </style>  
+
+
+<body>
+  <div id="root"> Батько наш - Бандера, Україна - мати,
+    Ми за Україну будем воювати! </div>
+<div id= "bomboloni"> <!-- Bomboloni pecardo guchi, la blanca --> </div>
+</body>
+
+  
+<script>
+
+
+function AnimatedText(id, newClass){
+this.id = id;
+this.text = null;
+this.letterSpans = null;
+this.newClass = newClass
+
+this.launch = function(){
+  let root = document.getElementById(this.id);
+  this.text = root.innerHTML
+this.text = this.text.split("");
+root.innerHTML = null;
+
+for(i=0;i<this.text.length;i++){
+   let letter
+   if(this.text[i]===" "){letter = `<span>&nbsp<span>`}
+    else{letter = "<span>"+ this.text[i] +"<span>"} 
+root.innerHTML = root.innerHTML + letter
+}
+
+this.letterSpans = document.querySelectorAll(`#${this.id} > span`);
+this.setBaseClass() 
+this.transition()
+
+
+}
+this.transition = function(){
+
+   let count = 0
+setTimeout(delay.bind(this),100)
+
+    function delay(){
+      if(count<this.text.length){  
+if(this.newClass){ this.letterSpans[count].style.cssText = null;
+  this.letterSpans[count].classList.add(this.newClass); }
+else{this.letterSpans[count].style.cssText = "transition: all 0.4s ease; opacity:1; transform: translateY(0px); color:rgb(255, 0, 60);  display:inline-block;"}
+
+count++;
+      setTimeout(delay.bind(this),100)}
+    else return}
+ 
+}
+
+this.setBaseClass = function(){
+for(let i=0; i<this.letterSpans.length;i++){
+  this.letterSpans[i].style.cssText = " transition: all 0.4s ease; opacity:0; transform: translateY(50px); display:inline-block;";
+}
+}
+} 
+
+
+let text = new AnimatedText("root")
+text.launch()
+
+let blanca = new AnimatedText("bomboloni", "fade")
+//blanca.launch()
+
+</script>
+
+</body>
+</html>
+
+<!-- 
+How to use:
+ just call an object constructor, passing it "id"(required) and passing it css class(not required) for animation
+
+
+
+
+
+//Explanation 
+
+/* about setTimeout: if you would wright it in the cycle for - the cycle would run fast
+and call setTimeout one after another (so 10 of your setTimeout with delay 1 second - will
+get executed in 1 second - not in 10 seconds). But if you call setTimeout like a recursion
+when setTimeout call the function it sits in - then function will execute and then call
+itself through setTimeout, setTimeout will wait a second and then execute the function again,
+then again wait and execute... MAKE SETtIMEOUT WORK AS AN RECURSION -
+ make a closure to keep the count and inner function should at it's end call itself through
+ setTimeout.
+
+SetTimeout has its own this(it always a window, wherever you call it) so if you would call 
+some method in the object constructor using setTimeout, you have to "bind" it to your object's "this"
+
+to insert a space you have to right down &nbsp right in the tag(span or div does not 
+matter) 
+
+this.letterSpans = document.querySelectorAll(`#${this.id} > span`); // this way we get only spans what lay directly in the tag with current id;
+
+each time i set style.cssText i override the previous inline style attribute of a tag. so of i want to keep some parameters i have write them twice - 
+  before and after change  (this is where i had a problem with transition) 
+
+  console.log(window.getComputedStyle(your div - object)) // will show you all css characteristics about an element
+*/
+
+
+
+////============================================================================
+//OPEN CODE
+ 
+   let root = document.getElementById('root');
+let text = root.innerHTML
+text = text.split("");
+root.innerHTML = null;
+
+
+ for(i=0;i<text.length;i++){
+   let letter
+   if(text[i]===" "){
+    letter = `<span>&nbsp<span>`}
+    else{letter = "<span>"+ text[i] +"<span>"} 
+root.innerHTML = root.innerHTML + letter
+
+}
+ 
+let letterSpans = document.querySelectorAll(`#root > span`)
+
+
+
+transition()
+
+function transition (){
+  let count = 0
+
+  setTimeout(delay,100)
+
+      function delay(){
+        if(count<text.length){ 
+          letterSpans[count].classList.add('fade');
+        count++;
+        setTimeout(delay,100)}
+      else return}
+
+} 
+
+-->
+
